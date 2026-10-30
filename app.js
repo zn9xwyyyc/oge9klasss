@@ -109,8 +109,7 @@ const subjectsData = [
       ]
     }
   ]
-}
-  }, // <--- Запятая после закрытия английского языка
+},
   {
     name: "Биология",
     topics: [
@@ -399,4 +398,3 @@ function initTranslator() {
     if (e.key === "Enter") doTranslate();
   });
 }
-];
