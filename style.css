@@ -100,6 +100,24 @@ body {
 }
 .topics-list.open { display: block; }
 
+/* Стили для подразделов (Алгебра/Геометрия) */
+.group-title {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--neon-blue);
+  padding: 10px 10px 5px 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 4px;
+}
+.group-title:hover { text-decoration: underline; }
+
+.subtopics {
+  padding-left: 10px;
+}
+
 .topic-item {
   padding: 8px 10px;
   font-size: 14px;
@@ -192,6 +210,18 @@ body {
   font-weight: 600;
 }
 .info-box .modal-close:hover { border-color: var(--neon-blue); }
+
+/* ============ Анимация Telegram ============ */
+@keyframes blink {
+  0% { color: #000000; text-shadow: none; }
+  50% { color: var(--neon-blue); text-shadow: 0 0 8px rgba(0, 51, 255, 0.6); }
+  100% { color: #000000; text-shadow: none; }
+}
+
+.telegram-link {
+  font-weight: bold;
+  animation: blink 2s infinite;
+}
 
 /* ============ Мобильная версия ============ */
 @media (max-width: 768px) {
