@@ -46,7 +46,7 @@ function applySettings() {
   radiusSlider.value = currentRadius;
   radiusValue.textContent = currentRadius;
 
-  // Запускаем Canvas с текущим фоном и цветом
+  // Запуск фона с переданным цветом
   if (typeof setBackground === "function") setBackground(currentBg, currentColor);
 }
 
@@ -287,6 +287,7 @@ function initTranslator() {
   async function doTranslate() {
     const text = input.value.trim();
     if (!text) return;
+
     result.textContent = "Перевод...";
     result.style.color = "var(--text-muted)";
 
@@ -334,7 +335,6 @@ function setBackground(type, color) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles = [];
 
-  // Конвертация HEX в RGB
   const hexToRgb = (hex) => {
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "0, 51, 255";
@@ -343,7 +343,6 @@ function setBackground(type, color) {
 
   if (type === "none") return;
 
-  // 1. ПОЛОСЫ
   if (type === "stripes") {
     const drawStripes = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -366,14 +365,13 @@ function setBackground(type, color) {
     drawStripes();
   }
 
-  // 2. ДОЖДЬ
   if (type === "rain") {
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 100; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         len: Math.random() * 20 + 10,
-        speed: Math.random() * 8 + 4,
+        speed: Math.random() * 5 + 5,
       });
     }
     const drawRain = () => {
@@ -396,20 +394,19 @@ function setBackground(type, color) {
     drawRain();
   }
 
-  // 3. КРОВЬ
   if (type === "blood") {
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 30; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * -canvas.height,
         w: Math.random() * 4 + 2,
-        h: Math.random() * 60 + 20,
+        h: Math.random() * 50 + 20,
         speed: Math.random() * 2 + 1,
       });
     }
     const drawBlood = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = `rgba(${rgbColor}, 0.35)`;
+      ctx.fillStyle = `rgba(${rgbColor}, 0.3)`;
       
       particles.forEach(p => {
         ctx.beginPath();
@@ -418,4 +415,16 @@ function setBackground(type, color) {
         
         p.y += p.speed;
         if (p.y > canvas.height) {
-          p.y = -p.h
+          p.y = -p.h;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+      animId = requestAnimationFrame(drawBlood);
+    };
+    drawBlood();
+  }
+}
+
+// ============ СТАРТ ============
+applySettings();
+renderSubjects(subjectsData);
