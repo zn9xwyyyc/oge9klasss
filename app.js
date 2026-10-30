@@ -449,3 +449,191 @@ subjectsData.push({
     }
   ]
 });
+// ============ Элементы ============
+const subjectsListEl = document.getElementById("subjectsList");
+const contentInnerEl = document.getElementById("contentInner");
+const searchInput = document.getElementById("searchInput");
+const backBtn = document.getElementById("backBtn");
+const infoBtn = document.getElementById("infoBtn");
+const helpBtn = document.getElementById("helpBtn");
+const infoModal = document.getElementById("infoModal");
+const helpModal = document.getElementById("helpModal");
+
+// ============ Рендер списка предметов ============
+function renderSubjects(list) {
+  subjectsListEl.innerHTML = "";
+
+  if (!list.length) {
+    subjectsListEl.innerHTML = "<p style='color:#999'>Ничего не найдено</p>";
+    return;
+  }
+
+  list.forEach((subject) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "subject";
+
+    const title = document.createElement("div");
+    title.className = "subject-title";
+    title.innerHTML = `<span>${subject.name}</span><span>▾</span>`;
+
+    const groupsWrap = document.createElement("div");
+    groupsWrap.className = "topics-list";
+
+    // Проверка: если у предмета сразу есть темы (без групп)
+    if (subject.topics) {
+       subject.topics.forEach((topic) => {
+          const t = document.createElement("div");
+          t.className = "topic-item";
+          t.textContent = topic.title;
+          t.addEventListener("click", () => openTopic(subject.name, "", topic));
+          groupsWrap.appendChild(t);
+       });
+    } 
+    // Если есть группы (Алгебра/Геометрия)
+    else if (subject.groups) {
+      subject.groups.forEach((group) => {
+        if (group.topics) {
+          const groupTitle = document.createElement("div");
+          groupTitle.className = "group-title";
+          groupTitle.textContent = group.name;
+          
+          groupTitle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const topicContainer = groupTitle.nextElementSibling;
+            if (topicContainer && topicContainer.classList.contains("subtopics")) {
+              topicContainer.style.display = topicContainer.style.display === "none" ? "block" : "none";
+            }
+          });
+          
+          groupsWrap.appendChild(groupTitle);
+
+          const topicContainer = document.createElement("div");
+          topicContainer.className = "subtopics";
+          topicContainer.style.display = "none";
+
+          group.topics.forEach((topic) => {
+            const t = document.createElement("div");
+            t.className = "topic-item";
+            t.textContent = topic.title;
+            t.addEventListener("click", () => openTopic(subject.name, group.name, topic));
+            topicContainer.appendChild(t);
+          });
+          
+          groupsWrap.appendChild(topicContainer);
+        }
+      });
+    }
+
+    title.addEventListener("click", () => {
+      groupsWrap.classList.toggle("open");
+      title.classList.toggle("active");
+    });
+
+    wrapper.appendChild(title);
+    wrapper.appendChild(groupsWrap);
+    subjectsListEl.appendChild(wrapper);
+  });
+}
+
+// ============ Открытие темы (тут магия карты) ============
+function openTopic(subjectName, groupName, topic) {
+  contentInnerEl.innerHTML = `
+    <div class="topic-content">
+      <h2>${topic.title}</h2>
+      <p style="color:#6b7280; margin-bottom:18px;">${subjectName} ${groupName ? '/ ' + groupName : ''}</p>
+      ${topic.content
+        .map(
+          (f) => `
+        <div class="formula-block">
+          <div class="formula-name">${f.name || ""}</div>
+          <div class="formula-value">${f.value || ""}</div>
+          <div class="formula-unit">${f.unit || ""}</div>
+          ${f.image ? `<img src="${f.image}" alt="${f.name}" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;">` : ''}
+          ${f.iframe ? `<iframe src="${f.iframe}" width="100%" height="500px" style="border-radius: 10px; border: none; margin-top: 15px;"></iframe>` : ''}
+        </div>`
+        )
+        .join("")}
+    </div>`;
+
+  document.body.classList.add("topic-open");
+  document.querySelectorAll(".topic-item").forEach((el) => {
+    el.classList.toggle("active", el.textContent === topic.title);
+  });
+}
+
+// ============ Кнопка "Назад" ============
+backBtn.addEventListener("click", () => {
+  if (document.body.classList.contains("topic-open")) {
+    document.body.classList.remove("topic-open");
+    return;
+  }
+  contentInnerEl.innerHTML = `
+    <h1 class="welcome-title">Добро пожаловать!</h1>
+    <p class="welcome-text">Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения и пояснения.</p>`;
+});
+
+// ============ Поиск ============
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) {
+    renderSubjects(subjectsData);
+    return;
+  }
+
+  const filtered = [];
+  subjectsData.forEach((subject) => {
+    const matchedSubject = subject.name.toLowerCase().includes(q);
+    let hasMatchedTopics = false;
+
+    // Поиск по простым предметам
+    if (subject.topics) {
+      const matched = subject.topics.filter(t => 
+        t.title.toLowerCase().includes(q) || 
+        (t.content || []).some(f => [f.name, f.value, f.unit].join(" ").toLowerCase().includes(q))
+      );
+      if (matched.length || matchedSubject) {
+         filtered.push({ ...subject, topics: matchedSubject ? subject.topics : matched });
+         hasMatchedTopics = true;
+      }
+    }
+    // Поиск по группам
+    else if (subject.groups) {
+      const newGroups = subject.groups.map((group) => {
+        const matchedTopics = group.topics.filter((t) => {
+          const inTitle = t.title.toLowerCase().includes(q);
+          const inContent = (t.content || []).some((f) =>
+            [f.name, f.value, f.unit].join(" ").toLowerCase().includes(q)
+          );
+          return inTitle || inContent;
+        });
+        if (matchedTopics.length > 0) hasMatchedTopics = true;
+        return { ...group, topics: matchedSubject ? group.topics : matchedTopics };
+      });
+
+      if (matchedSubject || hasMatchedTopics) {
+        filtered.push({ ...subject, groups: matchedSubject ? subject.groups : newGroups.filter(g => g.topics.length > 0) });
+      }
+    }
+  });
+
+  renderSubjects(filtered);
+});
+
+// ============ Модальные окна ============
+infoBtn.addEventListener("click", () => infoModal.classList.add("show"));
+helpBtn.addEventListener("click", () => helpModal.classList.add("show"));
+
+document.querySelectorAll(".modal-close").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.getElementById(btn.dataset.close).classList.remove("show");
+  });
+});
+
+document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.classList.remove("show");
+  });
+});
+
+// ============ Запуск ============
+renderSubjects(subjectsData);
