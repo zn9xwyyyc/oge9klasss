@@ -46,7 +46,6 @@ function applySettings() {
   radiusSlider.value = currentRadius;
   radiusValue.textContent = currentRadius;
 
-  // Запуск фона с переданным цветом
   if (typeof setBackground === "function") setBackground(currentBg, currentColor);
 }
 
@@ -100,20 +99,20 @@ function renderSubjects(list) {
     groupsWrap.className = "topics-list";
 
     if (subject.topics) {
-       subject.topics.forEach((topic) => {
-          const t = document.createElement("div");
-          t.className = "topic-item";
-          t.textContent = topic.title;
-          t.addEventListener("click", () => openTopic(subject.name, "", topic));
-          groupsWrap.appendChild(t);
-       });
+      subject.topics.forEach((topic) => {
+        const t = document.createElement("div");
+        t.className = "topic-item";
+        t.textContent = topic.title;
+        t.addEventListener("click", () => openTopic(subject.name, "", topic));
+        groupsWrap.appendChild(t);
+      });
     } else if (subject.groups) {
       subject.groups.forEach((group) => {
         if (group.topics) {
           const groupTitle = document.createElement("div");
           groupTitle.className = "group-title";
           groupTitle.textContent = group.name;
-          
+
           groupTitle.addEventListener("click", (e) => {
             e.stopPropagation();
             const topicContainer = groupTitle.nextElementSibling;
@@ -121,7 +120,7 @@ function renderSubjects(list) {
               topicContainer.style.display = topicContainer.style.display === "none" ? "block" : "none";
             }
           });
-          
+
           groupsWrap.appendChild(groupTitle);
 
           const topicContainer = document.createElement("div");
@@ -135,7 +134,7 @@ function renderSubjects(list) {
             t.addEventListener("click", () => openTopic(subject.name, group.name, topic));
             topicContainer.appendChild(t);
           });
-          
+
           groupsWrap.appendChild(topicContainer);
         }
       });
@@ -150,6 +149,9 @@ function renderSubjects(list) {
     wrapper.appendChild(groupsWrap);
     subjectsListEl.appendChild(wrapper);
   });
+
+  // после перерисовки меню — обновляем снежный покров на кнопках
+  if (typeof buildSnowCover === "function") buildSnowCover();
 }
 
 function openTopic(subjectName, groupName, topic) {
@@ -177,16 +179,21 @@ function openTopic(subjectName, groupName, topic) {
   });
 
   if (subjectName === "Английский язык") initTranslator();
+
+  // после открытия темы — пересобрать снег
+  if (typeof buildSnowCover === "function") buildSnowCover();
 }
 
 backBtn.addEventListener("click", () => {
   if (document.body.classList.contains("topic-open")) {
     document.body.classList.remove("topic-open");
+    if (typeof buildSnowCover === "function") buildSnowCover();
     return;
   }
   contentInnerEl.innerHTML = `
     <h1 class="welcome-title">Добро пожаловать!</h1>
     <p class="welcome-text">Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения и пояснения.</p>`;
+  if (typeof buildSnowCover === "function") buildSnowCover();
 });
 
 // Поиск
@@ -200,13 +207,13 @@ searchInput.addEventListener("input", () => {
     let hasMatchedTopics = false;
 
     if (subject.topics) {
-      const matched = subject.topics.filter(t => 
-        t.title.toLowerCase().includes(q) || 
+      const matched = subject.topics.filter(t =>
+        t.title.toLowerCase().includes(q) ||
         (t.content || []).some(f => [f.name, f.value, f.unit].join(" ").toLowerCase().includes(q))
       );
       if (matched.length || matchedSubject) {
-         filtered.push({ ...subject, topics: matchedSubject ? subject.topics : matched });
-         hasMatchedTopics = true;
+        filtered.push({ ...subject, topics: matchedSubject ? subject.topics : matched });
+        hasMatchedTopics = true;
       }
     } else if (subject.groups) {
       const newGroups = subject.groups.map((group) => {
@@ -322,31 +329,70 @@ const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
 let animId = null;
 let particles = [];
+let snowCaps = [];       // «шапки» снега на кнопках
+let snowFlakes = [];     // падающие снежинки
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  if (currentBg === "blood") buildSnowCover();
 }
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
+
+// hex → "r, g, b"
+function hexToRgb(hex) {
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "0, 51, 255";
+}
+
+// Собираем координаты кнопок/панелей и раскладываем по их верху снежные бугорки
+function buildSnowCover() {
+  snowCaps = [];
+  if (currentBg !== "blood") return;
+
+  const targets = document.querySelectorAll(
+    ".subject-title, .topic-item, .group-title, button, .modal-content, .sidebar, .welcome-title, .formula-block"
+  );
+
+  targets.forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (r.width < 24 || r.height < 12) return;
+    if (r.bottom < 0 || r.top > window.innerHeight) return; // за экраном не рисуем
+
+    const capCount = Math.max(3, Math.round(r.width / 26));
+    const step = r.width / capCount;
+    const caps = [];
+    for (let i = 0; i < capCount; i++) {
+      caps.push({
+        x: r.left + step * (i + 0.5),
+        y: r.top,
+        r: 4 + Math.random() * 5,          // радиус бугорка
+        seed: Math.random() * 100,
+      });
+    }
+    snowCaps.push({ x: r.left, y: r.top, w: r.width, h: r.height, caps });
+  });
+}
 
 function setBackground(type, color) {
   cancelAnimationFrame(animId);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles = [];
+  snowCaps = [];
+  snowFlakes = [];
 
-  const hexToRgb = (hex) => {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "0, 51, 255";
-  };
   const rgbColor = hexToRgb(color);
 
   if (type === "none") return;
 
+  // -------- ПОЛОСЫ (Aula): непрозрачные --------
   if (type === "stripes") {
     const drawStripes = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = `rgba(${rgbColor}, 0.15)`;
+      ctx.strokeStyle = `rgba(${rgbColor}, 1)`; // непрозрачно
       ctx.lineWidth = 15;
       const time = Date.now() / 50;
 
@@ -365,63 +411,90 @@ function setBackground(type, color) {
     drawStripes();
   }
 
+  // -------- ДОЖДЬ: крупнее и непрозрачный --------
   if (type === "rain") {
     for (let i = 0; i < 100; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        len: Math.random() * 20 + 10,
-        speed: Math.random() * 5 + 5,
+        len: Math.random() * 30 + 25,   // длиннее
+        speed: Math.random() * 7 + 7,   // быстрее
+        width: Math.random() * 2 + 2.5, // толще
       });
     }
     const drawRain = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = `rgba(${rgbColor}, 0.4)`;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      particles.forEach(p => {
+      ctx.strokeStyle = `rgba(${rgbColor}, 1)`; // непрозрачный
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.lineWidth = p.width;
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(p.x, p.y + p.len);
+        ctx.stroke();
         p.y += p.speed;
         if (p.y > canvas.height) {
           p.y = -p.len;
           p.x = Math.random() * canvas.width;
         }
       });
-      ctx.stroke();
       animId = requestAnimationFrame(drawRain);
     };
     drawRain();
   }
 
+  // -------- СНЕГ (вместо «крови»): падает + скапливается на кнопках --------
   if (type === "blood") {
-    for (let i = 0; i < 30; i++) {
-      particles.push({
+    // стартовые снежинки
+    for (let i = 0; i < 120; i++) {
+      snowFlakes.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * -canvas.height,
-        w: Math.random() * 4 + 2,
-        h: Math.random() * 50 + 20,
-        speed: Math.random() * 2 + 1,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1.2,
+        speed: Math.random() * 1.2 + 0.6,
+        drift: Math.random() * 0.8 - 0.4,
       });
     }
-    const drawBlood = () => {
+
+    buildSnowCover();
+
+    const drawSnow = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = `rgba(${rgbColor}, 0.3)`;
-      
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.roundRect(p.x, p.y, p.w, p.h, 10);
-        ctx.fill();
-        
-        p.y += p.speed;
-        if (p.y > canvas.height) {
-          p.y = -p.h;
-          p.x = Math.random() * canvas.width;
-        }
+
+      // 1) лежащий снег — «шапки» над кнопками
+      ctx.fillStyle = `rgba(${rgbColor}, 0.9)`;
+      snowCaps.forEach((block) => {
+        block.caps.forEach((c) => {
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.r, Math.PI, Math.PI * 2); // полукруг вверх
+          ctx.fill();
+          // маленький бугорок сверху
+          ctx.beginPath();
+          ctx.arc(c.x, c.y - c.r * 0.6, c.r * 0.55, Math.PI, Math.PI * 2);
+          ctx.fill();
+        });
       });
-      animId = requestAnimationFrame(drawBlood);
+
+      // 2) падающие снежинки
+      ctx.fillStyle = `rgba(${rgbColor}, 0.95)`;
+      snowFlakes.forEach((f) => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        f.y += f.speed;
+        f.x += f.drift + Math.sin(Date.now() / 1000 + f.y * 0.02) * 0.3;
+
+        if (f.y > canvas.height + 5) {
+          f.y = -5;
+          f.x = Math.random() * canvas.width;
+        }
+        if (f.x < -5) f.x = canvas.width + 5;
+        if (f.x > canvas.width + 5) f.x = -5;
+      });
+
+      animId = requestAnimationFrame(drawSnow);
     };
-    drawBlood();
+    drawSnow();
   }
 }
 
