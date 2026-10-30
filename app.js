@@ -216,9 +216,11 @@ function openTopic(subjectName, groupName, topic) {
     </div>`;
 
   document.body.classList.add("topic-open");
-  document.querySelectorAll(".topic-item").forEach((el) => {
+    document.querySelectorAll(".topic-item").forEach((el) => {
     el.classList.toggle("active", el.textContent === topic.title);
   });
+
+  if (subjectName === "Английский язык") initTranslator();
 }
 
 // ============ КНОПКА НАЗАД ============
@@ -294,3 +296,75 @@ document.querySelectorAll(".modal-overlay").forEach((overlay) => {
 
 // ============ СТАРТ ============
 renderSubjects(subjectsData);
+// ============ ВСТРОЕННЫЙ ПЕРЕВОДЧИК (АНГЛИЙСКИЙ) ============
+function initTranslator() {
+  const oldBox = document.getElementById("translatorBox");
+  if (oldBox) oldBox.remove();
+
+  const container = document.querySelector(".topic-content");
+  if (!container) return;
+
+  const box = document.createElement("div");
+  box.id = "translatorBox";
+  box.style.cssText = `
+    background: #f0f4ff;
+    border: 2px solid #0033ff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 24px;
+  `;
+
+  box.innerHTML = `
+    <h3 style="color:#0033ff; margin-bottom:10px; font-size:18px;">🔤 Быстрый перевод</h3>
+    <p style="color:#6b7280; font-size:13px; margin-bottom:10px;">Введи слово или фразу — получишь перевод (работает в обе стороны).</p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <input id="translateInput" type="text" placeholder="Например: depend on"
+        style="flex:1; min-width:180px; padding:10px 14px; border:1px solid #e5e7eb; border-radius:10px; font-size:15px; outline:none;">
+      <button id="translateBtn"
+        style="padding:10px 20px; background:#0033ff; color:#fff; border:none; border-radius:10px; font-weight:600; cursor:pointer;">
+        Перевести
+      </button>
+    </div>
+    <div id="translateResult" style="margin-top:14px; font-size:16px; color:#001a66; min-height:24px;"></div>
+  `;
+
+  container.appendChild(box);
+
+  const input = document.getElementById("translateInput");
+  const btn = document.getElementById("translateBtn");
+  const result = document.getElementById("translateResult");
+
+  async function doTranslate() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    result.textContent = "Перевод...";
+    result.style.color = "#6b7280";
+
+    try {
+      // Автоопределение языка: если в тексте есть кириллица — переводим на английский, иначе на русский
+      const hasCyrillic = /[а-яё]/i.test(text);
+      const targetLang = hasCyrillic ? "en" : "ru";
+
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data && data[0] && data[0][0] && data[0][0][0]) {
+        result.textContent = data[0][0][0];
+        result.style.color = "#001a66";
+      } else {
+        result.textContent = "Не удалось перевести. Попробуй ещё раз.";
+        result.style.color = "#dc2626";
+      }
+    } catch (e) {
+      result.textContent = "Ошибка соединения. Проверь интернет.";
+      result.style.color = "#dc2626";
+    }
+  }
+
+  btn.addEventListener("click", doTranslate);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") doTranslate();
+  });
+}
