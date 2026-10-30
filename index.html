@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Формулы ОГЭ — Справочник</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Верхняя панель управления (на мобильных — сверху, на ПК — слева) -->
+  <aside class="sidebar">
+    <button class="side-btn" id="backBtn" title="Назад">←</button>
+    <button class="side-btn" id="infoBtn" title="Информация">i</button>
+    <button class="side-btn" id="helpBtn" title="Помощь">?</button>
+  </aside>
+
+  <!-- Список предметов и тем -->
+  <nav class="subjects-panel" id="subjectsPanel">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Поиск: тема, формула, единица..." />
+    </div>
+    <div id="subjectsList" class="subjects-list"></div>
+  </nav>
+
+  <!-- Основная область с контентом -->
+  <main class="content-panel" id="contentPanel">
+    <div class="content-inner" id="contentInner">
+      <h1 class="welcome-title">Добро пожаловать!</h1>
+      <p class="welcome-text">
+        Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения
+        и пояснения. Используйте поиск сверху, чтобы быстро найти нужное.
+      </p>
+    </div>
+  </main>
+
+  <!-- Модальное окно регистрации (класс) -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-box">
+      <h2>Регистрация</h2>
+      <p>Укажите ваш класс (для статистики посещений):</p>
+      <input type="text" id="classInput" placeholder="Например: 9" maxlength="2" />
+      <button id="registerBtn">Войти</button>
+      <p class="small-note">Данные используются только для сбора статистики.</p>
+    </div>
+  </div>
+
+  <!-- Модальное окно "Информация" -->
+  <div class="modal-overlay" id="infoModal">
+    <div class="modal-box info-box">
+      <h2>О проекте</h2>
+      <p><b>Автор:</b> ученик 10 класса</p>
+      <p><b>Telegram для связи:</b> <a href="https://t.me/zn9xwyyyc" target="_blank">@zn9xwyyyc</a></p>
+      <p><b>Язык программирования:</b> HTML, CSS, JavaScript</p>
+      <p><b>База данных:</b> Supabase</p>
+      <p><b>Хостинг:</b> GitHub Pages</p>
+      <p><b>Время разработки:</b> <span id="devTime">уточняется</span></p>
+      <p><b>Назначение:</b> сборник формул и справочной информации для подготовки к ОГЭ (9 класс).</p>
+      <button class="modal-close" data-close="infoModal">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно "Помощь" -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal-box info-box">
+      <h2>Помощь</h2>
+      <p><b>С чего начать?</b></p>
+      <ul>
+        <li>Выберите предмет в левом меню (на телефоне — в списке).</li>
+        <li>Раскройте тему — появятся формулы и единицы измерения.</li>
+        <li>Используйте строку поиска для быстрого доступа.</li>
+      </ul>
+      <p><b>Не нашли нужное?</b> Напишите автору в Telegram: <a href="https://t.me/zn9xwyyyc" target="_blank">@zn9xwyyyc</a>.</p>
+      <p><b>Как работают вкладки?</b> На ПК — навигация слева, контент справа. На телефоне — меню сверху, контент на весь экран.</p>
+      <button class="modal-close" data-close="helpModal">Закрыть</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
