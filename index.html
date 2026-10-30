@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Фоновый слой для эффектов (дождь, полосы, кровь) -->
   <canvas id="bgCanvas"></canvas>
 
   <aside class="sidebar">
@@ -34,7 +33,6 @@
     </div>
   </main>
 
-  <!-- Модальное окно "Информация" -->
   <div class="modal-overlay" id="infoModal">
     <div class="modal-box info-box">
       <h2>О проекте</h2>
@@ -47,21 +45,19 @@
     </div>
   </div>
 
-  <!-- Модальное окно "Помощь" -->
   <div class="modal-overlay" id="helpModal">
     <div class="modal-box info-box">
       <h2>Помощь</h2>
       <p><b>С чего начать?</b></p>
       <ul>
-        <li>Выберите предмет в левом меню (на телефоне — в списке).</li>
+        <li>Выберите предмет в левом меню.</li>
         <li>Нажмите на подраздел, чтобы раскрыть темы.</li>
-        <li>Выберите тему — появятся формулы, картинки и примеры.</li>
+        <li>Выберите тему — появятся формулы.</li>
       </ul>
       <button class="modal-close" data-close="helpModal">Закрыть</button>
     </div>
   </div>
 
-  <!-- Модальное окно "Настройки" -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box info-box">
       <h2>Настройки</h2>
@@ -69,13 +65,11 @@
       <div class="setting-group">
         <label class="setting-label">Тема оформления</label>
         <div class="theme-selector">
-          <div class="theme-option" data-theme="light">
+          <div class="theme-option" data-theme="light" title="Светлая">
             <div class="theme-preview light-prev"></div>
-            <span>Светлая</span>
           </div>
-          <div class="theme-option" data-theme="dark">
+          <div class="theme-option" data-theme="dark" title="Темная">
             <div class="theme-preview dark-prev"></div>
-            <span>Темная</span>
           </div>
         </div>
       </div>
@@ -92,12 +86,20 @@
 
       <div class="setting-group">
         <label class="setting-label">Фон рабочей области</label>
-        <select id="bgSelect" class="select-input">
-          <option value="none">Без фона</option>
-          <option value="stripes">Полосы (Aula)</option>
-          <option value="blood">Стекает кровь</option>
-          <option value="rain">Дождь</option>
-        </select>
+        <div class="bg-selector">
+          <div class="bg-option active" data-bg="none" title="Без фона">
+            <div class="bg-preview prev-none"></div>
+          </div>
+          <div class="bg-option" data-bg="stripes" title="Полосы (Aula)">
+            <div class="bg-preview prev-stripes"></div>
+          </div>
+          <div class="bg-option" data-bg="blood" title="Стекает кровь">
+            <div class="bg-preview prev-blood"></div>
+          </div>
+          <div class="bg-option" data-bg="rain" title="Дождь">
+            <div class="bg-preview prev-rain"></div>
+          </div>
+        </div>
       </div>
 
       <button class="modal-close" data-close="settingsModal" style="margin-top: 15px;">Закрыть</button>
