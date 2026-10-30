@@ -8,14 +8,14 @@
 </head>
 <body>
 
-  <!-- Верхняя панель управления (на мобильных — сверху, на ПК — слева) -->
   <aside class="sidebar">
     <button class="side-btn" id="backBtn" title="Назад">←</button>
     <button class="side-btn" id="infoBtn" title="Информация">i</button>
     <button class="side-btn" id="helpBtn" title="Помощь">?</button>
+    <!-- Новая кнопка настроек -->
+    <button class="side-btn" id="settingsBtn" title="Настройки">⚙</button>
   </aside>
 
-  <!-- Список предметов и тем -->
   <nav class="subjects-panel" id="subjectsPanel">
     <div class="search-wrap">
       <input type="text" id="searchInput" placeholder="Поиск: тема, формула, единица..." />
@@ -23,7 +23,6 @@
     <div id="subjectsList" class="subjects-list"></div>
   </nav>
 
-  <!-- Основная область с контентом -->
   <main class="content-panel" id="contentPanel">
     <div class="content-inner" id="contentInner">
       <h1 class="welcome-title">Добро пожаловать!</h1>
@@ -42,7 +41,6 @@
       <p><b>Telegram для связи:</b> <a href="https://t.me/zn9xwyyyc" target="_blank" class="telegram-link">@zn9xwyyyc</a></p>
       <p><b>Язык программирования:</b> HTML, CSS, JavaScript</p>
       <p><b>Хостинг:</b> GitHub Pages</p>
-      <p><b>Время разработки:</b> <span id="devTime">≈ 8 часов (из-за кривой работы Supabase и GitHub это заняло столько много времени)</span></p>
       <p><b>Назначение:</b> сборник формул и справочной информации для подготовки к ОГЭ (9 класс).</p>
       <button class="modal-close" data-close="infoModal">Закрыть</button>
     </div>
@@ -64,6 +62,30 @@
     </div>
   </div>
 
+  <!-- Модальное окно "Настройки" -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box info-box">
+      <h2>Настройки</h2>
+      
+      <div class="setting-item">
+        <label><input type="checkbox" id="themeToggle"> Темная тема (черно-желтая)</label>
+      </div>
+      
+      <div class="setting-item">
+        <label>Цвет акцента:</label>
+        <input type="color" id="colorPicker" value="#0033ff" style="cursor: pointer; border: none; width: 40px; height: 40px; background: none; padding: 0;">
+      </div>
+      
+      <div class="setting-item">
+        <label><input type="checkbox" id="shapeToggle"> Квадратные кнопки (со скруглением)</label>
+      </div>
+
+      <button class="modal-close" data-close="settingsModal" style="margin-top: 20px;">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Подключаем два скрипта: сначала данные, потом логику -->
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
