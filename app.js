@@ -176,7 +176,7 @@ function openTopic(subjectName, groupName, topic) {
     el.classList.toggle("active", el.textContent === topic.title);
   });
 
-  if (subjectName === "Английский язык") initTranslator();
+  if (subjectName === "Английский язык" || subjectName === "Немецкий язык") initTranslator();
 }
 
 backBtn.addEventListener("click", () => {
@@ -292,8 +292,14 @@ function initTranslator() {
     result.style.color = "var(--text-muted)";
 
     try {
-      const hasCyrillic = /[а-яё]/i.test(text);
-      const targetLang = hasCyrillic ? "en" : "ru";
+           const hasCyrillic = /[а-яё]/i.test(text);
+      // Если текст на русском — переводим на язык текущего предмета
+      // Если текст не на русском — переводим на русский
+      let targetLang = "ru";
+      if (hasCyrillic) {
+        if (subjectName === "Немецкий язык") targetLang = "de";
+        else targetLang = "en"; // по умолчанию английский
+      }
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
       const response = await fetch(url);
       const data = await response.json();
