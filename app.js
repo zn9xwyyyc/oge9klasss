@@ -25,51 +25,57 @@ const subjectsData = [
   {
     name: "Русский язык",
     groups: [
-      { name: "Орфография", topics: [{ title: "Приставки", content: [{ name: "На З и С", value: "Раз-/Рас-, Без-/Бес-", unit: "З перед звонкой (раздать), С перед глухой (расписать)." }, { name: "ПРЕ и ПРИ", value: "При- (приближение), Пре- (=очень, =пере-)", unit: "Пример: приехать, премудрый." }] }, { title: "Корни", content: [{ name: "Чередование", value: "-лаг-/-лож-, -раст-/-рос-", unit: "Пример: полагать — положить." }] }, { title: "Н и НН", content: [{ name: "В прилагательных", value: "-НН- (основа на -н + -н-, -онн-, -енн-)", unit: "Пример: туманный, станционный." }] }] },
-      { name: "Пунктуация", topics: [{ title: "Сложное предложение", content: [{ name: "ССП", value: "Запятая перед И, НО, А", unit: "Пример: [Солнце село], и [стало прохладно]." }] }, { title: "Обособленные члены", content: [{ name: "Причастный оборот", value: "Выделяется запятыми после слова", unit: "Книга, лежащая на столе, была интересной." }, { name: "Деепричастный", value: "ВСЕГДА выделяется запятыми", unit: "Мальчик, читая книгу, не заметил маму." }] }] }
+      { name: "Орфография", topics: [{ title: "Приставки", content: [{ name: "На З и С", value: "Раз-/Рас-, Без-/Бес-", unit: "З перед звонкой (раздать), С перед глухой (расписать)." }, { name: "ПРЕ и ПРИ", value: "При- (приближение), Пре- (=очень, =пере-)", unit: "Пример: приехать, премудрый." }] }] },
+      { name: "Пунктуация", topics: [{ title: "Сложное предложение", content: [{ name: "ССП", value: "Запятая перед И, НО, А", unit: "Пример: [Солнце село], и [стало прохладно]." }] }] }
     ]
   },
   {
     name: "Информатика",
     groups: [
-      { name: "Теория", topics: [{ title: "Системы счисления", content: [{ name: "Из 10 в 2", value: "Деление на 2 с остатком", unit: "Пример: 5 / 2 = 2 (ост. 1), 2 / 2 = 1 (ост. 0), 1 / 2 = 0 (ост. 1). Ответ: 101." }, { name: "Из 2 в 10", value: "Сумма разрядов на 2ⁿ", unit: "Пример: 101₂ = 1·2² + 0·2¹ + 1·2⁰ = 5." }] }, { title: "Единицы измерения", content: [{ name: "Бит-Байт", value: "1 Байт = 8 бит", unit: "Минимальная единица — бит." }, { name: "КБ и МБ", value: "1 КБ = 1024 байт; 1 МБ = 1024 КБ", unit: "Именно 1024!" }] }, { title: "Кодирование", content: [{ name: "Объем текста", value: "V = K · i", unit: "K — символы, i — вес одного. Пример: 10 символов (i=8) = 80 бит." }] }] }
+      { name: "Теория", topics: [{ title: "Системы счисления", content: [{ name: "Из 10 в 2", value: "Деление на 2 с остатком", unit: "Пример: 5 / 2 = 2 (ост. 1), 2 / 2 = 1 (ост. 0), 1 / 2 = 0 (ост. 1). Ответ: 101." }] }, { title: "Единицы измерения", content: [{ name: "Бит-Байт", value: "1 Байт = 8 бит", unit: "Минимальная единица — бит." }] }] }
     ]
   },
   {
     name: "Физика",
     groups: [
-      { name: "Механика", topics: [{ title: "Движение", content: [{ name: "Скорость", value: "v = S / t", unit: "Пример: 100 м за 20 с = 5 м/с." }, { name: "Ускорение", value: "a = (v - v₀) / t", unit: "Пример: с 0 до 10 м/с за 2 с, a = 5 м/с²." }] }, { title: "Силы", content: [{ name: "Сила тяжести", value: "F = m · g", unit: "g ≈ 10. Пример: масса 5 кг, F = 50 Н." }, { name: "Сила Гука", value: "F = k · Δx", unit: "k — жесткость, Δx — удлинение." }] }] },
-      { name: "Электричество", topics: [{ title: "Законы", content: [{ name: "Закон Ома", value: "I = U / R", unit: "I — ток (А), U — напряжение (В), R — сопротивление (Ом)." }, { name: "Джоуль-Ленц", value: "Q = I² · R · t", unit: "Количество теплоты (Дж)." }] }] }
-    ]
-  },
-  {
-    name: "Химия",
-    groups: [
-      { name: "Основы", topics: [{ title: "Валентность", content: [{ name: "Постоянная валентность", value: "H(I), O(II), Na(I), Ca(II)", unit: "Водород всегда 1, кислород всегда 2." }] }, { title: "Моль и масса", content: [{ name: "Количество вещества", value: "n = m / M", unit: "n — моль, m — масса (г), M — молярная масса (г/моль)." }, { name: "Молярный объем", value: "V = n · 22.4", unit: "Для газов при нормальных условиях. V — литры." }] }] }
-    ]
-  },
-  {
-    name: "Биология",
-    groups: [
-      { name: "Человек и природа", topics: [{ title: "Кровеносная система", content: [{ name: "Круги кровообращения", value: "Большой и малый", unit: "Малый: сердце -> легкие -> сердце. Большой: сердце -> органы -> сердце." }] }, { title: "Генетика", content: [{ name: "Законы Менделя", value: "A - доминантный, a - рецессивный", unit: "Гетерозигота Aa проявляет доминантный признак." }] }] }
-    ]
-  },
-  {
-    name: "География",
-    groups: [
-      { name: "Карта и природа", topics: [{ title: "Масштаб", content: [{ name: "Перевод масштаба", value: "1:100000", unit: "В 1 см 1 км (100 000 см = 1000 м = 1 км)." }] }, { title: "Климат", content: [{ name: "Амплитуда", value: "A = t_max - t_min", unit: "Разница между самой высокой и низкой температурой." }] }] }
+      { name: "Механика", topics: [{ title: "Движение", content: [{ name: "Скорость", value: "v = S / t", unit: "Пример: 100 м за 20 с = 5 м/с." }] }] },
+      { name: "Электричество", topics: [{ title: "Законы", content: [{ name: "Закон Ома", value: "I = U / R", unit: "I — ток (А), U — напряжение (В), R — сопротивление (Ом)." }] }] }
     ]
   },
   {
     name: "Обществознание",
     groups: [
-      { name: "Общество и человек", topics: [{ title: "Сферы жизни", content: [{ name: "Сферы", value: "Экономическая, Политическая, Социальная, Духовная", unit: "Нужно уметь определять, к какой сфере относится пример (например, выборы — политическая, наука — духовная)." }] }, { title: "Право", content: [{ name: "Права ребенка", value: "С 14 лет, с 16 лет", unit: "С 14 лет — паспорт, уголовная ответственность за тяжкие. С 16 — полная ответственность." }] }] }
+      { name: "Человек и общество", topics: [{ title: "Сферы жизни", content: [{ name: "Сферы", value: "Экономическая, Политическая, Социальная, Духовная", unit: "Выборы — политическая, наука — духовная." }] }] }
+    ]
+  },
+  {
+    name: "Биология",
+    groups: [
+      { name: "Человек", topics: [{ title: "Кровеносная система", content: [{ name: "Круги кровообращения", value: "Большой и малый", unit: "Малый: сердце -> легкие -> сердце." }] }] }
+    ]
+  },
+  {
+    name: "География",
+    groups: [
+      { name: "Карта и природа", topics: [{ title: "Масштаб", content: [{ name: "Перевод масштаба", value: "1:100000", unit: "В 1 см 1 км (100 000 см = 1000 м = 1 км)." }] }] }
+    ]
+  },
+  {
+    name: "Химия",
+    groups: [
+      { name: "Основы", topics: [{ title: "Моль и масса", content: [{ name: "Количество вещества", value: "n = m / M", unit: "n — моль, m — масса (г), M — молярная масса (г/моль)." }] }] }
     ]
   },
   {
     name: "История",
     groups: [
       { name: "Россия в XX веке", topics: [{ title: "Даты", content: [{ name: "Ключевые события", value: "1914, 1917, 1941-1945", unit: "1914 — Первая мировая. 1917 — Революция. 1941-1945 — ВОВ." }] }] }
+    ]
+  },
+  {
+    name: "Английский язык",
+    groups: [
+      { name: "Грамматика", topics: [{ title: "Времена", content: [{ name: "Present Simple", value: "V / V-s", unit: "Утверждение: He plays. Вопрос: Does he play? Отрицание: He does not play." }] }] }
     ]
   }
 ];
@@ -102,27 +108,38 @@ function renderSubjects(list) {
     title.innerHTML = `<span>${subject.name}</span><span>▾</span>`;
 
     const groupsWrap = document.createElement("div");
-    groupsWrap.className = "topics-list"; // Используем тот же класс для отступов
+    groupsWrap.className = "topics-list";
 
     subject.groups.forEach((group) => {
-      // Если у группы есть темы (Алгебра/Геометрия)
       if (group.topics) {
         const groupTitle = document.createElement("div");
         groupTitle.className = "group-title";
-        groupTitle.style.fontWeight = "bold";
-        groupTitle.style.padding = "10px 10px 5px 10px";
-        groupTitle.style.color = "var(--neon-blue)";
-        groupTitle.style.fontSize = "13px";
         groupTitle.textContent = group.name;
+        
+        // Делаем подраздел кликабельным, чтобы он раскрывал темы
+        groupTitle.addEventListener("click", (e) => {
+          e.stopPropagation(); // Чтобы не закрывался весь предмет
+          const topicContainer = groupTitle.nextElementSibling;
+          if (topicContainer && topicContainer.classList.contains("subtopics")) {
+            topicContainer.style.display = topicContainer.style.display === "none" ? "block" : "none";
+          }
+        });
+        
         groupsWrap.appendChild(groupTitle);
+
+        const topicContainer = document.createElement("div");
+        topicContainer.className = "subtopics";
+        topicContainer.style.display = "none"; // Скрываем темы по умолчанию
 
         group.topics.forEach((topic) => {
           const t = document.createElement("div");
           t.className = "topic-item";
           t.textContent = topic.title;
           t.addEventListener("click", () => openTopic(subject.name, group.name, topic));
-          groupsWrap.appendChild(t);
+          topicContainer.appendChild(t);
         });
+        
+        groupsWrap.appendChild(topicContainer);
       }
     });
 
@@ -173,7 +190,7 @@ backBtn.addEventListener("click", () => {
     <p class="welcome-text">Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения и пояснения.</p>`;
 });
 
-// ============ Поиск (обновлен под новую структуру) ============
+// ============ Поиск ============
 searchInput.addEventListener("input", () => {
   const q = searchInput.value.trim().toLowerCase();
   if (!q) {
