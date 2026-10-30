@@ -11,55 +11,75 @@ const helpModal = document.getElementById("helpModal");
 const settingsModal = document.getElementById("settingsModal");
 
 // ============ НАСТРОЙКИ ============
-const themeToggle = document.getElementById("themeToggle");
 const colorPicker = document.getElementById("colorPicker");
-const shapeToggle = document.getElementById("shapeToggle");
+const radiusSlider = document.getElementById("radiusSlider");
+const radiusValue = document.getElementById("radiusValue");
+const themeOptions = document.querySelectorAll(".theme-option");
+const bgSelect = document.getElementById("bgSelect");
 
-// Загрузка сохраненных настроек при старте
-function loadSettings() {
-  const isDark = localStorage.getItem("oge_dark") === "true";
-  const accentColor = localStorage.getItem("oge_color") || "#0033ff";
-  const isSquare = localStorage.getItem("oge_square") === "true";
+let currentTheme = localStorage.getItem("oge_theme") || "light";
+let currentColor = localStorage.getItem("oge_color") || "#0033ff";
+let currentRadius = localStorage.getItem("oge_radius") || "50";
+let currentBg = localStorage.getItem("oge_bg") || "none";
 
-  themeToggle.checked = isDark;
-  colorPicker.value = accentColor;
-  shapeToggle.checked = isSquare;
-
-  applySettings(isDark, accentColor, isSquare);
-}
-
-// Применение настроек
-function applySettings(isDark, color, isSquare) {
-  if (isDark) document.body.classList.add("dark-theme");
+function applySettings() {
+  // Тема
+  if (currentTheme === "dark") document.body.classList.add("dark-theme");
   else document.body.classList.remove("dark-theme");
 
-  document.documentElement.style.setProperty('--neon-blue', color);
-  
-  // Вычисляем темный оттенок для текста формул
-  const darkColor = color === "#0033ff" ? "#001a66" : color;
+  // Цвет
+  document.documentElement.style.setProperty('--neon-blue', currentColor);
+  const darkColor = currentColor === "#0033ff" ? "#001a66" : currentColor;
   document.documentElement.style.setProperty('--neon-blue-dark', darkColor);
 
-  if (isSquare) document.documentElement.style.setProperty('--btn-radius', '10px');
-  else document.documentElement.style.setProperty('--btn-radius', '50%');
+  // Скругление
+  document.documentElement.style.setProperty('--btn-radius', currentRadius + '%');
+
+  // Визуальное выделение выбранной темы
+  themeOptions.forEach(opt => {
+    if (opt.dataset.theme === currentTheme) opt.classList.add("active");
+    else opt.classList.remove("active");
+  });
+
+  // Синхронизация элементов управления
+  colorPicker.value = currentColor;
+  radiusSlider.value = currentRadius;
+  radiusValue.textContent = currentRadius;
+  bgSelect.value = currentBg;
+
+  // Запуск фона (функция будет добавлена ниже)
+  if (typeof setBackground === "function") setBackground(currentBg);
 }
 
-// Слушатели событий для настроек
-themeToggle.addEventListener("change", (e) => {
-  localStorage.setItem("oge_dark", e.target.checked);
-  applySettings(e.target.checked, colorPicker.value, shapeToggle.checked);
+// Слушатели настроек
+themeOptions.forEach(opt => {
+  opt.addEventListener("click", () => {
+    currentTheme = opt.dataset.theme;
+    localStorage.setItem("oge_theme", currentTheme);
+    applySettings();
+  });
 });
 
 colorPicker.addEventListener("input", (e) => {
-  localStorage.setItem("oge_color", e.target.value);
-  applySettings(themeToggle.checked, e.target.value, shapeToggle.checked);
+  currentColor = e.target.value;
+  localStorage.setItem("oge_color", currentColor);
+  applySettings();
 });
 
-shapeToggle.addEventListener("change", (e) => {
-  localStorage.setItem("oge_square", e.target.checked);
-  applySettings(themeToggle.checked, colorPicker.value, e.target.checked);
+radiusSlider.addEventListener("input", (e) => {
+  currentRadius = e.target.value;
+  localStorage.setItem("oge_radius", currentRadius);
+  applySettings();
 });
 
-// ============ ОТРИСОВКА СПИСКА ============
+bgSelect.addEventListener("change", (e) => {
+  currentBg = e.target.value;
+  localStorage.setItem("oge_bg", currentBg);
+  applySettings();
+});
+
+
+// ============ БАЗА ЗНАНИЙ (РЕНДЕР) ============
 function renderSubjects(list) {
   subjectsListEl.innerHTML = "";
   if (!list.length) {
@@ -231,7 +251,7 @@ document.querySelectorAll(".modal-overlay").forEach((overlay) => {
   });
 });
 
-// ============ ВСТРОЕННЫЙ ПЕРЕВОДЧИК ============
+// ============ ПЕРЕВОДЧИК ============
 function initTranslator() {
   const oldBox = document.getElementById("translatorBox");
   if (oldBox) oldBox.remove();
@@ -279,7 +299,6 @@ function initTranslator() {
     try {
       const hasCyrillic = /[а-яё]/i.test(text);
       const targetLang = hasCyrillic ? "en" : "ru";
-
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -288,11 +307,11 @@ function initTranslator() {
         result.textContent = data[0][0][0];
         result.style.color = "var(--text-main)";
       } else {
-        result.textContent = "Не удалось перевести. Попробуй ещё раз.";
+        result.textContent = "Не удалось перевести.";
         result.style.color = "#dc2626";
       }
     } catch (e) {
-      result.textContent = "Ошибка соединения. Проверь интернет.";
+      result.textContent = "Ошибка соединения.";
       result.style.color = "#dc2626";
     }
   }
@@ -303,6 +322,15 @@ function initTranslator() {
   });
 }
 
+// ============ ФОНОВЫЕ ЭФФЕКТЫ (ЗАГЛУШКА) ============
+// Сюда мы вставим движок для дождя/крови/полос в следующем сообщении
+function setBackground(type) {
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+  // Очистка canvas при смене фона
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 // ============ СТАРТ ============
-loadSettings();
+applySettings();
 renderSubjects(subjectsData);
