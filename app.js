@@ -368,3 +368,4 @@ function initTranslator() {
     if (e.key === "Enter") doTranslate();
   });
 }
+];
