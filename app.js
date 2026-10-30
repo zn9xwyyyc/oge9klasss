@@ -63,42 +63,53 @@ const subjectsData = [
     ]
   },
   {
-    name: "Английский язык",
-    topics: [
-      { title: "Времена", content: [{ name: "Present Simple", value: "V / V-s", unit: "He plays. Does he play? He does not play." }, { name: "Past Simple", value: "V2 / V-ed", unit: "He played. Did he play? He did not play." }, { name: "Present Perfect", value: "have/has + V3", unit: "I have done my homework." }] },
-      { title: "Словообразование", content: [{ name: "Приставки", value: "un-, in-, im-", unit: "unhappy, impossible." }, { name: "Суффиксы", value: "-tion, -ment, -er", unit: "education, development, teacher." }] }
-    ]
-  },
-  {
-    name: "Биология",
-    topics: [
-      { title: "Кровеносная система", content: [{ name: "Круги", value: "Малый и Большой", unit: "Малый: сердце -> легкие. Большой: сердце -> органы." }, { name: "Кровь", value: "Эритроциты, Лейкоциты", unit: "Эритроциты переносят кислород, лейкоциты защищают." }] },
-      { title: "Генетика", content: [{ name: "Законы Менделя", value: "A - доминантный, a - рецессивный", unit: "Гетерозигота Aa проявляет доминантный признак." }] }
-    ]
-  },
-  {
-    name: "География",
-    topics: [
-      { 
-        title: "Интерактивная карта мира", 
-        content: [
-          { 
-            name: "Карта", 
-            value: "Используйте колесико мыши для приближения", 
-            unit: "Вы можете перетаскивать карту и изучать материки и океаны.",
-            iframe: "https://yandex.ru/map-widget/v1/?ll=90.000000%2C30.000000&z=1&l=map" 
-          }
-        ] 
-      },
-      { title: "Масштаб и координаты", content: [{ name: "Масштаб", value: "1:100000", unit: "В 1 см 1 км." }, { name: "Координаты", value: "Широта и Долгота", unit: "Москва: 55° с.ш., 37° в.д." }] }
-    ]
-  },
-  {
-    name: "Химия",
-    topics: [
-      { title: "Основы", content: [{ name: "Валентность", value: "H(I), O(II)", unit: "Водород 1, кислород 2." }, { name: "Моль", value: "n = m / M", unit: "n — моль, m — масса, M — молярная масса." }] }
-    ]
-  }
+  name: "Английский язык",
+  topics: [
+    {
+      title: "Предлоги направления",
+      content: [
+        { name: "across", value: "через, поперёк", unit: "go across the street — перейти через улицу" },
+        { name: "along", value: "вдоль", unit: "walk along the river — идти вдоль реки" },
+        { name: "into", value: "в (внутрь)", unit: "go into the room — войти в комнату" },
+        { name: "out of", value: "из (наружу)", unit: "get out of the car — выйти из машины" },
+        { name: "through", value: "сквозь, через", unit: "go through the tunnel — пройти через туннель" },
+        { name: "towards", value: "по направлению к", unit: "run towards the exit — бежать к выходу" }
+      ]
+    },
+    {
+      title: "Предлоги времени",
+      content: [
+        { name: "for", value: "в течение (сколько)", unit: "for two hours — в течение двух часов" },
+        { name: "during", value: "во время (чего-то)", unit: "during the lesson — во время урока" },
+        { name: "since", value: "с (какого-то момента)", unit: "since Monday — с понедельника" },
+        { name: "by", value: "к (какому-то моменту)", unit: "by 5 o'clock — к пяти часам" },
+        { name: "until / till", value: "до (какого-то момента)", unit: "wait until Friday — ждать до пятницы" }
+      ]
+    },
+    {
+      title: "Глаголы с предлогами (часто на ОГЭ)",
+      content: [
+        { name: "depend on", value: "зависеть от", unit: "It depends on you. — Это зависит от тебя." },
+        { name: "listen to", value: "слушать (что-то)", unit: "listen to music — слушать музыку" },
+        { name: "wait for", value: "ждать (кого-то/что-то)", unit: "wait for the bus — ждать автобус" },
+        { name: "look for", value: "искать", unit: "look for a job — искать работу" },
+        { name: "apologise for", value: "извиняться за", unit: "apologise for being late — извиниться за опоздание" },
+        { name: "arrive at / in", value: "прибывать (at — здание, in — город)", unit: "arrive at school, arrive in Moscow" },
+        { name: "belong to", value: "принадлежать", unit: "This book belongs to me. — Эта книга принадлежит мне." }
+      ]
+    },
+    {
+      title: "Словообразование (суффиксы и приставки)",
+      content: [
+        { name: "-tion / -sion", value: "существительное от глагола", unit: "educate → education, decide → decision" },
+        { name: "-ment", value: "существительное от глагола", unit: "develop → development, agree → agreement" },
+        { name: "-er / -or", value: "профессия или действующее лицо", unit: "teach → teacher, act → actor" },
+        { name: "un-", value: "отрицательная приставка", unit: "happy → unhappy, able → unable" },
+        { name: "im- / in-", value: "отрицательная приставка (перед некоторыми буквами)", unit: "possible → impossible, correct → incorrect" }
+      ]
+    }
+  ]
+}
 ];
 
 // ============ ЭЛЕМЕНТЫ ============
