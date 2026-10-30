@@ -15,7 +15,7 @@ const colorPicker = document.getElementById("colorPicker");
 const radiusSlider = document.getElementById("radiusSlider");
 const radiusValue = document.getElementById("radiusValue");
 const themeOptions = document.querySelectorAll(".theme-option");
-const bgSelect = document.getElementById("bgSelect");
+const bgOptions = document.querySelectorAll(".bg-option");
 
 let currentTheme = localStorage.getItem("oge_theme") || "light";
 let currentColor = localStorage.getItem("oge_color") || "#0033ff";
@@ -23,39 +23,46 @@ let currentRadius = localStorage.getItem("oge_radius") || "50";
 let currentBg = localStorage.getItem("oge_bg") || "none";
 
 function applySettings() {
-  // Тема
   if (currentTheme === "dark") document.body.classList.add("dark-theme");
   else document.body.classList.remove("dark-theme");
 
-  // Цвет
   document.documentElement.style.setProperty('--neon-blue', currentColor);
   const darkColor = currentColor === "#0033ff" ? "#001a66" : currentColor;
   document.documentElement.style.setProperty('--neon-blue-dark', darkColor);
 
-  // Скругление
   document.documentElement.style.setProperty('--btn-radius', currentRadius + '%');
 
-  // Визуальное выделение выбранной темы
   themeOptions.forEach(opt => {
     if (opt.dataset.theme === currentTheme) opt.classList.add("active");
     else opt.classList.remove("active");
   });
 
-  // Синхронизация элементов управления
+  bgOptions.forEach(opt => {
+    if (opt.dataset.bg === currentBg) opt.classList.add("active");
+    else opt.classList.remove("active");
+  });
+
   colorPicker.value = currentColor;
   radiusSlider.value = currentRadius;
   radiusValue.textContent = currentRadius;
-  bgSelect.value = currentBg;
 
-  // Запуск фона (функция будет добавлена ниже)
-  if (typeof setBackground === "function") setBackground(currentBg);
+  // Запускаем Canvas с текущим фоном и цветом
+  if (typeof setBackground === "function") setBackground(currentBg, currentColor);
 }
 
-// Слушатели настроек
+// Слушатели
 themeOptions.forEach(opt => {
   opt.addEventListener("click", () => {
     currentTheme = opt.dataset.theme;
     localStorage.setItem("oge_theme", currentTheme);
+    applySettings();
+  });
+});
+
+bgOptions.forEach(opt => {
+  opt.addEventListener("click", () => {
+    currentBg = opt.dataset.bg;
+    localStorage.setItem("oge_bg", currentBg);
     applySettings();
   });
 });
@@ -72,14 +79,8 @@ radiusSlider.addEventListener("input", (e) => {
   applySettings();
 });
 
-bgSelect.addEventListener("change", (e) => {
-  currentBg = e.target.value;
-  localStorage.setItem("oge_bg", currentBg);
-  applySettings();
-});
 
-
-// ============ БАЗА ЗНАНИЙ (РЕНДЕР) ============
+// ============ РЕНДЕР СПИСКА И ТЕМ ============
 function renderSubjects(list) {
   subjectsListEl.innerHTML = "";
   if (!list.length) {
@@ -151,7 +152,6 @@ function renderSubjects(list) {
   });
 }
 
-// ============ ОТКРЫТИЕ ТЕМЫ ============
 function openTopic(subjectName, groupName, topic) {
   contentInnerEl.innerHTML = `
     <div class="topic-content">
@@ -179,7 +179,6 @@ function openTopic(subjectName, groupName, topic) {
   if (subjectName === "Английский язык") initTranslator();
 }
 
-// ============ КНОПКА НАЗАД ============
 backBtn.addEventListener("click", () => {
   if (document.body.classList.contains("topic-open")) {
     document.body.classList.remove("topic-open");
@@ -190,13 +189,10 @@ backBtn.addEventListener("click", () => {
     <p class="welcome-text">Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения и пояснения.</p>`;
 });
 
-// ============ ПОИСК ============
+// Поиск
 searchInput.addEventListener("input", () => {
   const q = searchInput.value.trim().toLowerCase();
-  if (!q) {
-    renderSubjects(subjectsData);
-    return;
-  }
+  if (!q) { renderSubjects(subjectsData); return; }
 
   const filtered = [];
   subjectsData.forEach((subject) => {
@@ -230,11 +226,10 @@ searchInput.addEventListener("input", () => {
       }
     }
   });
-
   renderSubjects(filtered);
 });
 
-// ============ МОДАЛЬНЫЕ ОКНА ============
+// Модалки
 infoBtn.addEventListener("click", () => infoModal.classList.add("show"));
 helpBtn.addEventListener("click", () => helpModal.classList.add("show"));
 settingsBtn.addEventListener("click", () => settingsModal.classList.add("show"));
@@ -251,7 +246,7 @@ document.querySelectorAll(".modal-overlay").forEach((overlay) => {
   });
 });
 
-// ============ ПЕРЕВОДЧИК ============
+// Переводчик
 function initTranslator() {
   const oldBox = document.getElementById("translatorBox");
   if (oldBox) oldBox.remove();
@@ -292,7 +287,6 @@ function initTranslator() {
   async function doTranslate() {
     const text = input.value.trim();
     if (!text) return;
-
     result.textContent = "Перевод...";
     result.style.color = "var(--text-muted)";
 
@@ -322,15 +316,106 @@ function initTranslator() {
   });
 }
 
-// ============ ФОНОВЫЕ ЭФФЕКТЫ (ЗАГЛУШКА) ============
-// Сюда мы вставим движок для дождя/крови/полос в следующем сообщении
-function setBackground(type) {
-  const canvas = document.getElementById("bgCanvas");
-  const ctx = canvas.getContext("2d");
-  // Очистка canvas при смене фона
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+// ============ ДВИЖОК АНИМАЦИИ ФОНА (CANVAS) ============
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+let animId = null;
+let particles = [];
 
-// ============ СТАРТ ============
-applySettings();
-renderSubjects(subjectsData);
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function setBackground(type, color) {
+  cancelAnimationFrame(animId);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = [];
+
+  // Конвертация HEX в RGB
+  const hexToRgb = (hex) => {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "0, 51, 255";
+  };
+  const rgbColor = hexToRgb(color);
+
+  if (type === "none") return;
+
+  // 1. ПОЛОСЫ
+  if (type === "stripes") {
+    const drawStripes = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = `rgba(${rgbColor}, 0.15)`;
+      ctx.lineWidth = 15;
+      const time = Date.now() / 50;
+
+      for (let i = -canvas.height; i < canvas.width + canvas.height; i += 150) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.bezierCurveTo(
+          i + Math.sin(time + i) * 100, canvas.height / 3,
+          i + Math.cos(time + i) * 100, (canvas.height / 3) * 2,
+          i, canvas.height
+        );
+        ctx.stroke();
+      }
+      animId = requestAnimationFrame(drawStripes);
+    };
+    drawStripes();
+  }
+
+  // 2. ДОЖДЬ
+  if (type === "rain") {
+    for (let i = 0; i < 150; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        len: Math.random() * 20 + 10,
+        speed: Math.random() * 8 + 4,
+      });
+    }
+    const drawRain = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = `rgba(${rgbColor}, 0.4)`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      particles.forEach(p => {
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x, p.y + p.len);
+        p.y += p.speed;
+        if (p.y > canvas.height) {
+          p.y = -p.len;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+      ctx.stroke();
+      animId = requestAnimationFrame(drawRain);
+    };
+    drawRain();
+  }
+
+  // 3. КРОВЬ
+  if (type === "blood") {
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        w: Math.random() * 4 + 2,
+        h: Math.random() * 60 + 20,
+        speed: Math.random() * 2 + 1,
+      });
+    }
+    const drawBlood = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = `rgba(${rgbColor}, 0.35)`;
+      
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.roundRect(p.x, p.y, p.w, p.h, 10);
+        ctx.fill();
+        
+        p.y += p.speed;
+        if (p.y > canvas.height) {
+          p.y = -p.h
