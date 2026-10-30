@@ -411,5 +411,65 @@ const subjectsData = [
         { name: "Ветер", value: "Движение воздуха из области высокого давления в область низкого", unit: "Бриз (днем с моря на сушу), Муссон (по сезонам)." }
       ] }
     ]
+  },
+  }, // ← Эта запятая ставится после закрывающей скобки Географии!
+  {
+    name: "Немецкий язык",
+    topics: [
+      {
+        title: "Предлоги направления (Richtungspräpositionen)",
+        content: [
+          { name: "in", value: "в (внутрь, отвечает на вопрос Wohin?)", unit: "in die Schule — в школу (Akkusativ)" },
+          { name: "auf", value: "на (открытую поверхность)", unit: "auf den Tisch — на стол" },
+          { name: "an", value: "на (вертикальную поверхность), к", unit: "an die Wand — на стену, an den Bahnhof — к вокзалу" },
+          { name: "durch", value: "через, сквозь", unit: "durch den Park — через парк" },
+          { name: "über", value: "над, через (по мосту)", unit: "über die Brücke — через мост" },
+          { name: "zu", value: "к (кому-то, куда-то)", unit: "zu dem Arzt (zum Arzt) — к врачу" },
+          { name: "nach", value: "в (город, страну), после", unit: "nach Moskau — в Москву, nach Hause — домой" }
+        ]
+      },
+      {
+        title: "Предлоги времени (Zeitpräpositionen)",
+        content: [
+          { name: "um", value: "в (точное время)", unit: "um 5 Uhr — в 5 часов" },
+          { name: "am", value: "в (день недели, время суток)", unit: "am Montag — в понедельник, am Morgen — утром" },
+          { name: "im", value: "в (месяц, время года)", unit: "im Juli — в июле, im Winter — зимой" },
+          { name: "seit", value: "с (какого-то момента), уже", unit: "seit einem Jahr — в течение года" },
+          { name: "für", value: "на (какой-то срок), за", unit: "für eine Woche — на неделю" },
+          { name: "vor", value: "перед, тому назад", unit: "vor dem Essen — перед едой, vor zwei Jahren — 2 года назад" },
+          { name: "nach", value: "после", unit: "nach dem Unterricht — после урока" }
+        ]
+      },
+      {
+        title: "Времена глагола (Tempora)",
+        content: [
+          { name: "Präsens (Настоящее)", value: "Глагол + личное окончание", unit: "Ich lerne Deutsch. (Я учу немецкий). Регулярное действие или факт." },
+          { name: "Perfekt (Прошедшее разговорное)", value: "haben/sein + Partizip II", unit: "Ich habe gelernt. (Я выучил). Используется в диалогах." },
+          { name: "Präteritum (Прошедшее книжное)", value: "Особая форма глагола", unit: "Ich lernte. (Я учил). Часто используется в рассказах и текстах." },
+          { name: "Futur I (Будущее)", value: "werden + инфинитив", unit: "Ich werde lernen. (Я буду учить)." },
+          { name: "Модальные глаголы", value: "können (мочь), müssen (должен), wollen (хотеть)", unit: "Ich kann schwimmen. (Я умею плавать)." }
+        ]
+      },
+      {
+        title: "Порядок слов в предложении",
+        content: [
+          { name: "Прямой порядок", value: "Подлежащее + Сказуемое + Второстепенные", unit: "Ich gehe heute ins Kino. (Я иду сегодня в кино)." },
+          { name: "Обратный порядок", value: "Обстоятельство + Сказуемое + Подлежащее", unit: "Heute gehe ich ins Kino. Если предложение начинается не с подлежащего, глагол идет вторым." },
+          { name: "Вопросительное без вопроса", value: "Сказуемое + Подлежащее", unit: "Gehst du ins Kino? (Ты идешь в кино?)." },
+          { name: "Вопросительное с вопросом", value: "Вопрос + Глагол + Подлежащее", unit: "Wann gehst du ins Kino? (Когда ты идешь в кино?)." },
+          { name: "Рамочная конструкция", value: "Модальный глагол на 2 месте, инфинитив в конце", unit: "Ich muss heute meine Hausaufgaben machen. (Я должен сегодня сделать домашку)." }
+        ]
+      },
+      {
+        title: "Словообразование (Wortbildung)",
+        content: [
+          { name: "-ung", value: "Существительное от глагола (женский род)", unit: "wohnen (жить) → die Wohnung (квартира)" },
+          { name: "-heit / -keit", value: "Существительное от прилагательного (женский род)", unit: "frei (свободный) → die Freiheit (свобода)" },
+          { name: "-er", value: "Профессия или действующее лицо (мужской род)", unit: "arbeiten (работать) → der Arbeiter (рабочий)" },
+          { name: "-chen / -lein", value: "Уменьшительно-ласкательный суффикс (средний род)", unit: "das Mädchen (девочка), das Fräulein (барышня)" },
+          { name: "un-", value: "Отрицательная приставка", unit: "glücklich (счастливый) → unglücklich (несчастный)" }
+        ]
+      }
+    ]
   }
 ];
