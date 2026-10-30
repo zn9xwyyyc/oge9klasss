@@ -1,131 +1,75 @@
 // ============ База знаний (все формулы здесь) ============
 const subjectsData = [
   {
-    name: "Математика (Алгебра)",
-    topics: [
-      { 
-        title: "Свойства степеней", 
-        content: [
-          { name: "Умножение", value: "aⁿ · aᵐ = aⁿ⁺ᵐ", unit: "При умножении степеней с одинаковыми основаниями показатели складываются. Пример: x² · x³ = x⁵" },
-          { name: "Деление", value: "aⁿ : aᵐ = aⁿ⁻ᵐ", unit: "При делении показатели вычитаются. Пример: y⁵ : y² = y³" },
-          { name: "Возведение в степень", value: "(aⁿ)ᵐ = aⁿ·ᵐ", unit: "Показатели перемножаются. Пример: (x²)³ = x⁶" },
-          { name: "Степень произведения", value: "(ab)ⁿ = aⁿ · bⁿ", unit: "Каждый множитель возводится в эту степень. Пример: (2x)³ = 8x³" }
-        ] 
+    name: "Математика",
+    groups: [
+      {
+        name: "Алгебра",
+        topics: [
+          { title: "Свойства степеней", content: [{ name: "Умножение", value: "aⁿ · aᵐ = aⁿ⁺ᵐ", unit: "Пример: x² · x³ = x⁵" }, { name: "Деление", value: "aⁿ : aᵐ = aⁿ⁻ᵐ", unit: "Пример: y⁵ : y² = y³" }] },
+          { title: "Сокращенное умножение", content: [{ name: "Квадрат суммы", value: "(a + b)² = a² + 2ab + b²", unit: "Пример: (x + 3)² = x² + 6x + 9" }, { name: "Разность квадратов", value: "a² - b² = (a - b)(a + b)", unit: "Пример: 9x² - 16 = (3x - 4)(3x + 4)" }] },
+          { title: "Квадратные уравнения", content: [{ name: "Дискриминант", value: "D = b² - 4ac", unit: "Если D>0 — два корня, D=0 — один, D<0 — нет." }, { name: "Корни", value: "x₁,₂ = (-b ± √D) / 2a", unit: "Пример: x² - 5x + 6 = 0. D = 1. x₁ = 3, x₂ = 2." }] },
+          { title: "Прогрессии", content: [{ name: "Арифметическая", value: "aₙ = a₁ + d(n - 1)", unit: "Пример: 2, 5, 8... a₃ = 2 + 3(2) = 8" }] }
+        ]
       },
-      { 
-        title: "Формулы сокращенного умножения", 
-        content: [
-          { name: "Квадрат суммы", value: "(a + b)² = a² + 2ab + b²", unit: "Пример: (x + 3)² = x² + 6x + 9" },
-          { name: "Квадрат разности", value: "(a - b)² = a² - 2ab + b²", unit: "Пример: (x - 4)² = x² - 8x + 16" },
-          { name: "Разность квадратов", value: "a² - b² = (a - b)(a + b)", unit: "Пример: 9x² - 16 = (3x - 4)(3x + 4)" }
-        ] 
-      },
-      { 
-        title: "Квадратные уравнения", 
-        content: [
-          { name: "Дискриминант", value: "D = b² - 4ac", unit: "Определяет количество корней. Если D>0 — два корня, D=0 — один, D<0 — нет корней." },
-          { name: "Корни (если D ≥ 0)", value: "x₁,₂ = (-b ± √D) / 2a", unit: "Пример: x² - 5x + 6 = 0. D = 25 - 24 = 1. x₁ = (5+1)/2 = 3, x₂ = (5-1)/2 = 2." },
-          { name: "Теорема Виета", value: "x₁ + x₂ = -b/a;  x₁ · x₂ = c/a", unit: "Для уравнения x² + bx + c = 0: сумма корней равна -b, произведение равно c." }
-        ] 
-      },
-      { 
-        title: "Прогрессии", 
-        content: [
-          { name: "Арифметическая (n-й член)", value: "aₙ = a₁ + d(n - 1)", unit: "d — разность прогрессии (на сколько каждое число больше предыдущего). Пример: 2, 5, 8... a₃ = 2 + 3(3-1) = 8." },
-          { name: "Арифметическая (сумма)", value: "Sₙ = (a₁ + aₙ) · n / 2", unit: "Пример: сумма первых 3 членов (2+5+8) = (2+8)*3/2 = 15." },
-          { name: "Геометрическая (n-й член)", value: "bₙ = b₁ · qⁿ⁻¹", unit: "q — знаменатель (во сколько раз каждое число больше предыдущего). Пример: 3, 6, 12... b₄ = 3 * 2³ = 24." }
-        ] 
+      {
+        name: "Геометрия",
+        topics: [
+          { title: "Треугольники", content: [{ name: "Площадь", value: "S = ½ · a · h", unit: "Пример: a=4, h=5, S = 10.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Triangle_height.svg/250px-Triangle_height.svg.png" }, { name: "Теорема Пифагора", value: "c² = a² + b²", unit: "Пример: катеты 3 и 4, гипотенуза = 5.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Pythagorean.svg/220px-Pythagorean.svg.png" }] },
+          { title: "Четырехугольники", content: [{ name: "Площадь трапеции", value: "S = ((a + b) / 2) · h", unit: "Пример: основания 5 и 7, высота 4. S = 24.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Trapezoid.svg/220px-Trapezoid.svg.png" }] },
+          { title: "Окружность", content: [{ name: "Площадь круга", value: "S = πR²", unit: "Пример: R=2, S = 12.56.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Circle_area.svg/220px-Circle_area.svg.png" }] }
+        ]
       }
-    ]
-  },
-  {
-    name: "Математика (Геометрия)",
-    topics: [
-      { 
-        title: "Треугольники", 
-        content: [
-          { 
-            name: "Площадь треугольника", 
-            value: "S = ½ · a · h", 
-            unit: "a — основание, h — высота проведенная к нему. Пример: a=4, h=5, S = 0.5*4*5 = 10.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Triangle_height.svg/250px-Triangle_height.svg.png"
-          },
-          { 
-            name: "Теорема Пифагора", 
-            value: "c² = a² + b²", 
-            unit: "Только для прямоугольного треугольника. c — гипотенуза. Пример: катеты 3 и 4, гипотенуза = √(9+16) = 5.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Pythagorean.svg/220px-Pythagorean.svg.png"
-          },
-          { 
-            name: "Теорема синусов", 
-            value: "a / sin(α) = b / sin(β) = 2R", 
-            unit: "R — радиус описанной окружности. Отношение стороны к синусу противолежащего угла постоянно.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Law_of_sines.svg/250px-Law_of_sines.svg.png"
-          }
-        ] 
-      },
-      { 
-        title: "Четырехугольники", 
-        content: [
-          { 
-            name: "Площадь параллелограмма", 
-            value: "S = a · h", 
-            unit: "a — основание, h — высота. Пример: основание 6, высота 4, S = 24.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Parallelogram_area.svg/250px-Parallelogram_area.svg.png"
-          },
-          { 
-            name: "Площадь трапеции", 
-            value: "S = ((a + b) / 2) · h", 
-            unit: "a и b — основания, h — высота. Пример: основания 5 и 7, высота 4. S = ((5+7)/2)*4 = 24.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Trapezoid.svg/220px-Trapezoid.svg.png"
-          }
-        ] 
-      },
-      { 
-        title: "Окружность и круг", 
-        content: [
-          { 
-            name: "Длина окружности", 
-            value: "C = 2πR", 
-            unit: "R — радиус. (π ≈ 3.14). Пример: R=5, C = 2 * 3.14 * 5 = 31.4.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Circumference_and_diameter.svg/250px-Circumference_and_diameter.svg.png"
-          },
-          { 
-            name: "Площадь круга", 
-            value: "S = πR²", 
-            unit: "Пример: R=2, S = 3.14 * 4 = 12.56.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Circle_area.svg/220px-Circle_area.svg.png"
-          }
-        ] 
-      }
-    ]
-  },
-  {
-    name: "Информатика",
-    topics: [
-      { title: "Системы счисления", content: [{ name: "Из 10 в 2", value: "Деление на 2 с остатком", unit: "Делим число на 2, записываем остатки. Читаем остатки снизу вверх. Пример: 5 / 2 = 2 (ост. 1), 2 / 2 = 1 (ост. 0), 1 / 2 = 0 (ост. 1). Ответ: 101." }, { name: "Из 2 в 10", value: "Сумма разрядов на 2ⁿ", unit: "Пример: 101₂ = 1·2² + 0·2¹ + 1·2⁰ = 4 + 0 + 1 = 5." }] },
-      { title: "Единицы измерения", content: [{ name: "Бит-Байт", value: "1 Байт = 8 бит", unit: "Минимальная единица — бит (0 или 1)." }, { name: "КБ и МБ", value: "1 КБ = 1024 байт; 1 МБ = 1024 КБ", unit: "Именно 1024, а не 1000!" }] },
-      { title: "Кодирование текста", content: [{ name: "Объем текста", value: "V = K · i", unit: "K — количество символов, i — вес одного символа в битах. Пример: 10 символов (i=8 бит) = 80 бит = 10 байт." }] },
-      { title: "Формула Хартли", content: [{ name: "Количество информации", value: "N = 2ⁱ", unit: "N — варианты, i — количество информации. Пример: 8 шаров, i = 3 бита (2³ = 8)." }] }
-    ]
-  },
-  {
-    name: "Физика",
-    topics: [
-      { title: "Механическое движение", content: [{ name: "Скорость", value: "v = S / t", unit: "S — путь, t — время. Пример: 100 м за 20 с = 5 м/с." }, { name: "Ускорение", value: "a = (v - v₀) / t", unit: "Пример: с 0 до 10 м/с за 2 с, a = 5 м/с²." }] },
-      { title: "Силы", content: [{ name: "Сила тяжести", value: "F = m · g", unit: "g ≈ 10. Пример: масса 5 кг, F = 50 Н." }, { name: "Сила Гука", value: "F = k · Δx", unit: "k — жесткость, Δx — удлинение." }] },
-      { title: "Давление", content: [{ name: "Твердого тела", value: "p = F / S", unit: "F — сила (Н), S — площадь (м²)." }, { name: "Жидкости", value: "p = ρ · g · h", unit: "ρ — плотность, h — глубина. Пример: вода, 10 м. p = 1000 * 10 * 10 = 100 кПа." }] },
-      { title: "Электричество", content: [{ name: "Закон Ома", value: "I = U / R", unit: "I — ток (А), U — напряжение (В), R — сопротивление (Ом)." }, { name: "Джоуль-Ленц", value: "Q = I² · R · t", unit: "Количество теплоты (Дж)." }] },
-      { title: "Тепловые явления", content: [{ name: "Нагревание", value: "Q = c · m · (t₂ - t₁)", unit: "c — теплоемкость. Пример: 2 кг воды на 10 градусов = 84 000 Дж." }, { name: "Плавление", value: "Q = λ · m", unit: "λ — удельная теплота плавления." }] }
     ]
   },
   {
     name: "Русский язык",
-    topics: [
-      { title: "Приставки", content: [{ name: "На З и С", value: "Раз-/Рас-, Без-/Бес-", unit: "З перед звонкой (раздать), С перед глухой (расписать)." }, { name: "ПРЕ и ПРИ", value: "При- (приближение), Пре- (=очень, =пере-)", unit: "Пример: приехать, пришить, премудрый." }] },
-      { title: "Корни", content: [{ name: "Чередование", value: "-лаг-/-лож-, -раст-/-рос-, -гар-/-гор-", unit: "Пример: полагать (перед Г) — положить (перед Ж)." }] },
-      { title: "Н и НН", content: [{ name: "В прилагательных", value: "-НН- (основа на -н + -н-, -онн-, -енн-)", unit: "Пример: туманный, станционный. Искл: ветреный." }, { name: "В причастиях", value: "-НН- (приставка, завис. слово, сов. вид)", unit: "Пример: жареный — пожаренный (есть приставка)." }] },
-      { title: "Пунктуация", content: [{ name: "ССП", value: "Запятая перед И, НО, А", unit: "Пример: [Солнце село], и [стало прохладно]." }, { name: "Причастный оборот", value: "Выделяется запятыми после слова", unit: "Книга, лежащая на столе, была интересной." }, { name: "Деепричастный", value: "ВСЕГДА выделяется запятыми", unit: "Мальчик, читая книгу, не заметил маму." }] }
+    groups: [
+      { name: "Орфография", topics: [{ title: "Приставки", content: [{ name: "На З и С", value: "Раз-/Рас-, Без-/Бес-", unit: "З перед звонкой (раздать), С перед глухой (расписать)." }, { name: "ПРЕ и ПРИ", value: "При- (приближение), Пре- (=очень, =пере-)", unit: "Пример: приехать, премудрый." }] }, { title: "Корни", content: [{ name: "Чередование", value: "-лаг-/-лож-, -раст-/-рос-", unit: "Пример: полагать — положить." }] }, { title: "Н и НН", content: [{ name: "В прилагательных", value: "-НН- (основа на -н + -н-, -онн-, -енн-)", unit: "Пример: туманный, станционный." }] }] },
+      { name: "Пунктуация", topics: [{ title: "Сложное предложение", content: [{ name: "ССП", value: "Запятая перед И, НО, А", unit: "Пример: [Солнце село], и [стало прохладно]." }] }, { title: "Обособленные члены", content: [{ name: "Причастный оборот", value: "Выделяется запятыми после слова", unit: "Книга, лежащая на столе, была интересной." }, { name: "Деепричастный", value: "ВСЕГДА выделяется запятыми", unit: "Мальчик, читая книгу, не заметил маму." }] }] }
+    ]
+  },
+  {
+    name: "Информатика",
+    groups: [
+      { name: "Теория", topics: [{ title: "Системы счисления", content: [{ name: "Из 10 в 2", value: "Деление на 2 с остатком", unit: "Пример: 5 / 2 = 2 (ост. 1), 2 / 2 = 1 (ост. 0), 1 / 2 = 0 (ост. 1). Ответ: 101." }, { name: "Из 2 в 10", value: "Сумма разрядов на 2ⁿ", unit: "Пример: 101₂ = 1·2² + 0·2¹ + 1·2⁰ = 5." }] }, { title: "Единицы измерения", content: [{ name: "Бит-Байт", value: "1 Байт = 8 бит", unit: "Минимальная единица — бит." }, { name: "КБ и МБ", value: "1 КБ = 1024 байт; 1 МБ = 1024 КБ", unit: "Именно 1024!" }] }, { title: "Кодирование", content: [{ name: "Объем текста", value: "V = K · i", unit: "K — символы, i — вес одного. Пример: 10 символов (i=8) = 80 бит." }] }] }
+    ]
+  },
+  {
+    name: "Физика",
+    groups: [
+      { name: "Механика", topics: [{ title: "Движение", content: [{ name: "Скорость", value: "v = S / t", unit: "Пример: 100 м за 20 с = 5 м/с." }, { name: "Ускорение", value: "a = (v - v₀) / t", unit: "Пример: с 0 до 10 м/с за 2 с, a = 5 м/с²." }] }, { title: "Силы", content: [{ name: "Сила тяжести", value: "F = m · g", unit: "g ≈ 10. Пример: масса 5 кг, F = 50 Н." }, { name: "Сила Гука", value: "F = k · Δx", unit: "k — жесткость, Δx — удлинение." }] }] },
+      { name: "Электричество", topics: [{ title: "Законы", content: [{ name: "Закон Ома", value: "I = U / R", unit: "I — ток (А), U — напряжение (В), R — сопротивление (Ом)." }, { name: "Джоуль-Ленц", value: "Q = I² · R · t", unit: "Количество теплоты (Дж)." }] }] }
+    ]
+  },
+  {
+    name: "Химия",
+    groups: [
+      { name: "Основы", topics: [{ title: "Валентность", content: [{ name: "Постоянная валентность", value: "H(I), O(II), Na(I), Ca(II)", unit: "Водород всегда 1, кислород всегда 2." }] }, { title: "Моль и масса", content: [{ name: "Количество вещества", value: "n = m / M", unit: "n — моль, m — масса (г), M — молярная масса (г/моль)." }, { name: "Молярный объем", value: "V = n · 22.4", unit: "Для газов при нормальных условиях. V — литры." }] }] }
+    ]
+  },
+  {
+    name: "Биология",
+    groups: [
+      { name: "Человек и природа", topics: [{ title: "Кровеносная система", content: [{ name: "Круги кровообращения", value: "Большой и малый", unit: "Малый: сердце -> легкие -> сердце. Большой: сердце -> органы -> сердце." }] }, { title: "Генетика", content: [{ name: "Законы Менделя", value: "A - доминантный, a - рецессивный", unit: "Гетерозигота Aa проявляет доминантный признак." }] }] }
+    ]
+  },
+  {
+    name: "География",
+    groups: [
+      { name: "Карта и природа", topics: [{ title: "Масштаб", content: [{ name: "Перевод масштаба", value: "1:100000", unit: "В 1 см 1 км (100 000 см = 1000 м = 1 км)." }] }, { title: "Климат", content: [{ name: "Амплитуда", value: "A = t_max - t_min", unit: "Разница между самой высокой и низкой температурой." }] }] }
+    ]
+  },
+  {
+    name: "Обществознание",
+    groups: [
+      { name: "Общество и человек", topics: [{ title: "Сферы жизни", content: [{ name: "Сферы", value: "Экономическая, Политическая, Социальная, Духовная", unit: "Нужно уметь определять, к какой сфере относится пример (например, выборы — политическая, наука — духовная)." }] }, { title: "Право", content: [{ name: "Права ребенка", value: "С 14 лет, с 16 лет", unit: "С 14 лет — паспорт, уголовная ответственность за тяжкие. С 16 — полная ответственность." }] }] }
+    ]
+  },
+  {
+    name: "История",
+    groups: [
+      { name: "Россия в XX веке", topics: [{ title: "Даты", content: [{ name: "Ключевые события", value: "1914, 1917, 1941-1945", unit: "1914 — Первая мировая. 1917 — Революция. 1941-1945 — ВОВ." }] }] }
     ]
   }
 ];
@@ -157,34 +101,48 @@ function renderSubjects(list) {
     title.className = "subject-title";
     title.innerHTML = `<span>${subject.name}</span><span>▾</span>`;
 
-    const topicsWrap = document.createElement("div");
-    topicsWrap.className = "topics-list";
+    const groupsWrap = document.createElement("div");
+    groupsWrap.className = "topics-list"; // Используем тот же класс для отступов
 
-    subject.topics.forEach((topic) => {
-      const t = document.createElement("div");
-      t.className = "topic-item";
-      t.textContent = topic.title;
-      t.addEventListener("click", () => openTopic(subject, topic));
-      topicsWrap.appendChild(t);
+    subject.groups.forEach((group) => {
+      // Если у группы есть темы (Алгебра/Геометрия)
+      if (group.topics) {
+        const groupTitle = document.createElement("div");
+        groupTitle.className = "group-title";
+        groupTitle.style.fontWeight = "bold";
+        groupTitle.style.padding = "10px 10px 5px 10px";
+        groupTitle.style.color = "var(--neon-blue)";
+        groupTitle.style.fontSize = "13px";
+        groupTitle.textContent = group.name;
+        groupsWrap.appendChild(groupTitle);
+
+        group.topics.forEach((topic) => {
+          const t = document.createElement("div");
+          t.className = "topic-item";
+          t.textContent = topic.title;
+          t.addEventListener("click", () => openTopic(subject.name, group.name, topic));
+          groupsWrap.appendChild(t);
+        });
+      }
     });
 
     title.addEventListener("click", () => {
-      topicsWrap.classList.toggle("open");
+      groupsWrap.classList.toggle("open");
       title.classList.toggle("active");
     });
 
     wrapper.appendChild(title);
-    wrapper.appendChild(topicsWrap);
+    wrapper.appendChild(groupsWrap);
     subjectsListEl.appendChild(wrapper);
   });
 }
 
 // ============ Открытие темы ============
-function openTopic(subject, topic) {
+function openTopic(subjectName, groupName, topic) {
   contentInnerEl.innerHTML = `
     <div class="topic-content">
       <h2>${topic.title}</h2>
-      <p style="color:#6b7280; margin-bottom:18px;">${subject.name}</p>
+      <p style="color:#6b7280; margin-bottom:18px;">${subjectName} / ${groupName}</p>
       ${topic.content
         .map(
           (f) => `
@@ -215,7 +173,7 @@ backBtn.addEventListener("click", () => {
     <p class="welcome-text">Выберите предмет слева и тему, чтобы увидеть формулы, единицы измерения и пояснения.</p>`;
 });
 
-// ============ Поиск ============
+// ============ Поиск (обновлен под новую структуру) ============
 searchInput.addEventListener("input", () => {
   const q = searchInput.value.trim().toLowerCase();
   if (!q) {
@@ -226,18 +184,29 @@ searchInput.addEventListener("input", () => {
   const filtered = [];
   subjectsData.forEach((subject) => {
     const matchedSubject = subject.name.toLowerCase().includes(q);
-    const matchedTopics = subject.topics.filter((t) => {
-      const inTitle = t.title.toLowerCase().includes(q);
-      const inContent = (t.content || []).some((f) =>
-        [f.name, f.value, f.unit].join(" ").toLowerCase().includes(q)
-      );
-      return inTitle || inContent;
+    let hasMatchedTopics = false;
+
+    const newGroups = subject.groups.map((group) => {
+      const matchedTopics = group.topics.filter((t) => {
+        const inTitle = t.title.toLowerCase().includes(q);
+        const inContent = (t.content || []).some((f) =>
+          [f.name, f.value, f.unit].join(" ").toLowerCase().includes(q)
+        );
+        return inTitle || inContent;
+      });
+
+      if (matchedTopics.length > 0) hasMatchedTopics = true;
+
+      return {
+        ...group,
+        topics: matchedSubject ? group.topics : matchedTopics
+      };
     });
 
-    if (matchedSubject || matchedTopics.length) {
+    if (matchedSubject || hasMatchedTopics) {
       filtered.push({
         ...subject,
-        topics: matchedSubject ? subject.topics : matchedTopics,
+        groups: matchedSubject ? subject.groups : newGroups.filter(g => g.topics.length > 0)
       });
     }
   });
