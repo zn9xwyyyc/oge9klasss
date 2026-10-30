@@ -8,14 +8,12 @@
 </head>
 <body>
 
-  <!-- Верхняя панель управления (на мобильных — сверху, на ПК — слева) -->
   <aside class="sidebar">
     <button class="side-btn" id="backBtn" title="Назад">←</button>
     <button class="side-btn" id="infoBtn" title="Информация">i</button>
     <button class="side-btn" id="helpBtn" title="Помощь">?</button>
   </aside>
 
-  <!-- Список предметов и тем -->
   <nav class="subjects-panel" id="subjectsPanel">
     <div class="search-wrap">
       <input type="text" id="searchInput" placeholder="Поиск: тема, формула, единица..." />
@@ -23,7 +21,6 @@
     <div id="subjectsList" class="subjects-list"></div>
   </nav>
 
-  <!-- Основная область с контентом -->
   <main class="content-panel" id="contentPanel">
     <div class="content-inner" id="contentInner">
       <h1 class="welcome-title">Добро пожаловать!</h1>
@@ -34,7 +31,6 @@
     </div>
   </main>
 
-  <!-- Модальное окно "Информация" -->
   <div class="modal-overlay" id="infoModal">
     <div class="modal-box info-box">
       <h2>О проекте</h2>
@@ -48,18 +44,17 @@
     </div>
   </div>
 
-  <!-- Модальное окно "Помощь" -->
   <div class="modal-overlay" id="helpModal">
     <div class="modal-box info-box">
       <h2>Помощь</h2>
       <p><b>С чего начать?</b></p>
       <ul>
         <li>Выберите предмет в левом меню (на телефоне — в списке).</li>
-        <li>Нажмите на подраздел (например, "Алгебра" или "Геометрия"), чтобы раскрыть темы.</li>
+        <li>Нажмите на подраздел, чтобы раскрыть темы.</li>
         <li>Выберите тему — появятся формулы, картинки и примеры.</li>
         <li>Используйте строку поиска для быстрого доступа.</li>
       </ul>
-      <p><b>Не нашли нужное?</b> Напишите автору в Telegram: <a href="https://t.me/zn9xwyyyc" target="_blank" class="telegram-link">@zn9xwyyyc</a>.</p>
+      <p><b>Не нашли нужное?</b> Напишите автору: <a href="https://t.me/zn9xwyyyc" target="_blank" class="telegram-link">@zn9xwyyyc</a>.</p>
       <button class="modal-close" data-close="helpModal">Закрыть</button>
     </div>
   </div>
